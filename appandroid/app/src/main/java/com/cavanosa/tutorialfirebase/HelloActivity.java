@@ -1,15 +1,20 @@
 package com.cavanosa.tutorialfirebase;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +44,14 @@ public class HelloActivity extends AppCompatActivity {
                 signOut();
             }
         });
+        currentUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(Task<GetTokenResult> task) {
+                        String token = task.getResult().getToken();
+                        Log.i("token", token);
+                    }
+                });
     }
 
     public void signOut() {
